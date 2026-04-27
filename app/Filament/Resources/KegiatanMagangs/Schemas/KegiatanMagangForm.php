@@ -17,7 +17,7 @@ class KegiatanMagangForm
                 Select::make('mahasiswa_id')
                     ->relationship('mahasiswa', 'nama')
                     ->default(fn() => auth()->user()->mahasiswa?->id)
-                    ->hidden(fn() => auth()->user()->hasRole('Mahasiswa'))
+                    ->hidden(fn() => auth()->user()->mahasiswa !== null)
                     ->dehydrated() // Ensure it's sent to the server even if hidden
                     ->searchable()
                     ->preload()

@@ -95,6 +95,24 @@
             background-color: #f5f3ff;
         }
 
+        .nama-mahasiswa {
+            display: block;
+            height: 90px;
+            overflow: hidden;
+            word-break: break-word;
+            font-size: 2.4rem;
+            line-height: 1.05;
+        }
+
+        .nama-universitas {
+            display: block;
+            height: 80px;
+            overflow: hidden;
+            word-break: break-word;
+            font-size: 1.8rem;
+            line-height: 1.05;
+        }
+
         @media print {
             .no-print { display: none !important; }
         }
@@ -165,25 +183,13 @@
                                 
                                 <div class="relative z-10 h-full flex flex-col">
                                     <div class="p-6 pt-8">
-                                        @php
-                                            $namaParts = explode(' ', $kartu->mahasiswa->nama ?? 'Nama Mahasiswa', 2);
-                                            $namaAwal = $namaParts[0] ?? '';
-                                            $namaSisa = $namaParts[1] ?? '';
-                                        @endphp
-                                        <div class="text-[2.4rem] font-[900] text-gray-900 leading-[1.05] tracking-tighter uppercase">
-                                            <span class="block">{{ strtoupper($namaAwal) }}</span>
-                                            @if($namaSisa)
-                                                <span class="block">{{ strtoupper($namaSisa) }}</span>
-                                            @endif
+                                        <div class="nama-mahasiswa font-[900] text-gray-900 leading-[1.05] tracking-tighter uppercase">
+                                            {{ strtoupper($kartu->mahasiswa->nama ?? 'Nama Mahasiswa') }}
                                         </div>
                                     </div>
 
                                     <div class="flex-1 relative flex items-end">
-                                        @if($kartu->mahasiswa->foto)
-                                            <img id="foto-kartu" class="foto-mahasiswa" src="{{ asset('storage/' . $kartu->mahasiswa->foto) }}" alt="Foto" crossorigin="anonymous">
-                                        @else
-                                            <img id="foto-kartu" class="foto-mahasiswa" src="data:image/svg+xml,%3Csvg viewBox='0 0 200 255' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='200' height='255' fill='%23c5b5e8'/%3E%3Ccircle cx='100' cy='90' r='45' fill='%23a093c7'/%3E%3Cellipse cx='100' cy='220' rx='70' ry='55' fill='%23a093c7'/%3E%3C/svg%3E" alt="Placeholder">
-                                        @endif
+                                        <img id="foto-kartu" class="foto-mahasiswa" src="{{ asset('storage/' . $kartu->mahasiswa->foto) }}" alt="Foto Mahasiswa" crossorigin="anonymous">
                                         <div class="badge-vertikal">MAGANG</div>
                                     </div>
 
@@ -203,20 +209,13 @@
                                 <div class="blob blob-3"></div>
 
                                 <div class="relative z-10 h-full flex flex-col">
-                                    <div class="p-6 pt-8">
-                                        @php
-                                            $namaIns = $kartu->universitas->namaUniversitas ?? 'INSTANSI';
-                                            $insParts = explode(' ', $namaIns, 2);
-                                        @endphp
-                                        <div class="text-[1.8rem] font-[900] text-gray-900 leading-[1.05] tracking-tighter uppercase">
-                                            <span class="block">{{ strtoupper($insParts[0] ?? $namaIns) }}</span>
-                                            @if(isset($insParts[1]))
-                                                <span class="block">{{ strtoupper($insParts[1]) }}</span>
-                                            @endif
+                                    <div class="p-6 pt-4">
+                                        <div class="nama-universitas font-[900] text-gray-900 leading-[1.05] tracking-tighter uppercase">
+                                            {{ strtoupper($kartu->universitas->namaUniversitas ?? 'INSTANSI') }}
                                         </div>
                                     </div>
 
-                                    <div class="flex-1 flex items-center justify-center p-4">
+                                    <div class="flex-1 flex items-center justify-center p-4 pt-0">
                                         <div class="bg-white p-2 rounded-xl shadow-lg">
                                             {!! QrCode::size(140)->margin(1)->generate(url('/kartu-magang/' . $kartu->id . '/verify')) !!}
                                         </div>
@@ -326,9 +325,9 @@
                 const { jsPDF } = window.jspdf;
                 const kartuEls = Array.from(document.querySelectorAll('.kartu'));
                 
-                const rect = kartuEls[0].getBoundingClientRect();
-                const elW = rect.width;
-                const elH = rect.height;
+                // Use fixed pixel dimensions (300x440 from CSS)
+                const elW = 300;
+                const elH = 440;
                 const ratio = elH / elW;
 
                 const canvases = await Promise.all(
@@ -452,6 +451,43 @@
         });
 
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') tutupModal(); });
+
+        {{-- AUTO RESIZE NAMA MAHASISWA & UNIVERSITAS --}}
+        function autoFitNames() {
+            // Auto-fit nama mahasiswa
+            const mahasiswaElem = document.querySelector('.nama-mahasiswa');
+            if (mahasiswaElem) {
+                const maxHeightMahasiswa = 90; // ~2 lines at base size
+                let fontSizeMahasiswa = 2.4 * 16; // 2.4rem to pixels
+                const minFontSize = 14;
+                
+                mahasiswaElem.style.fontSize = fontSizeMahasiswa + 'px';
+                while (mahasiswaElem.scrollHeight > maxHeightMahasiswa && fontSizeMahasiswa > minFontSize) {
+                    fontSizeMahasiswa -= 2;
+                    mahasiswaElem.style.fontSize = fontSizeMahasiswa + 'px';
+                }
+            }
+
+            // Auto-fit nama universitas
+            const universitasElem = document.querySelector('.nama-universitas');
+            if (universitasElem) {
+                const maxHeightUniversitas = 80; // ~2 lines at base size
+                let fontSizeUniversitas = 1.6 * 16; // 1.6rem to pixels
+                const minFontSize = 10;
+                
+                universitasElem.style.fontSize = fontSizeUniversitas + 'px';
+                while (universitasElem.scrollHeight > maxHeightUniversitas && fontSizeUniversitas > minFontSize) {
+                    fontSizeUniversitas -= 2;
+                    universitasElem.style.fontSize = fontSizeUniversitas + 'px';
+                }
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', autoFitNames);
+        } else {
+            autoFitNames();
+        }
     </script>
 </body>
 </html>

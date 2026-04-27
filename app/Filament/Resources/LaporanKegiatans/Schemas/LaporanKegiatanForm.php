@@ -16,7 +16,7 @@ class LaporanKegiatanForm
             ->components([
                 Select::make('kegiatan_magang_id')
                     ->relationship('kegiatanMagang', 'judulKegiatan', function ($query) {
-                        if (auth()->user()->hasRole('Mahasiswa')) {
+                        if (auth()->user()->mahasiswa !== null) {
                             return $query->where('mahasiswa_id', auth()->user()->mahasiswa?->id);
                         }
                         return $query;
@@ -27,7 +27,7 @@ class LaporanKegiatanForm
                 Select::make('mahasiswa_id')
                     ->relationship('mahasiswa', 'nama')
                     ->default(fn() => auth()->user()->mahasiswa?->id)
-                    ->hidden(fn() => auth()->user()->hasRole('Mahasiswa'))
+                    ->hidden(fn() => auth()->user()->mahasiswa !== null)
                     ->dehydrated()
                     ->searchable()
                     ->preload()

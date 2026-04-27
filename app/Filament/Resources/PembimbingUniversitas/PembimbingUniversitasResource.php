@@ -27,10 +27,7 @@ class PembimbingUniversitasResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    public static function canAccess(): bool
-    {
-        return auth()->user()->can('access ' . class_basename(static::class));
-    }
+
 
     public static function form(Schema $schema): Schema
     {

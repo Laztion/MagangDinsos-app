@@ -85,7 +85,7 @@ class IndonesianSeeder extends Seeder
                 'email_verified_at' => now(),
                 'is_active' => true,
             ]);
-            $user->assignRole('Pembimbing Universitas');
+
 
             $pembimbingUnis[] = PembimbingUniversitas::create([
                 'user_id' => $user->id,
@@ -126,7 +126,7 @@ class IndonesianSeeder extends Seeder
                 'email_verified_at' => now(),
                 'is_active' => true,
             ]);
-            $user->assignRole('Mahasiswa');
+
 
             $mahasiswa = Mahasiswa::create([
                 'user_id' => $user->id,

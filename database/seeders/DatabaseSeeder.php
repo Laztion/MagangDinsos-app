@@ -16,11 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Run Roles and Permissions Seeder
-        $this->call([
-            RolesAndPermissionsSeeder::class,
-        ]);
-
         // 2. Create Super Admin User if it doesn't exist
         $adminEmail = 'admin@admin.com';
         $adminUser = User::where('email', $adminEmail)->first();
@@ -33,10 +28,6 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
                 'is_active' => true,
             ]);
-        }
-
-        if (!$adminUser->hasRole('Super Admin')) {
-            $adminUser->assignRole('Super Admin');
         }
 
         // 3. Run Indonesian Data Seeder

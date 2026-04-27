@@ -35,7 +35,7 @@ class LaporanKegiatanResource extends Resource
 
         if (!$user) return $query;
 
-        if ($user->hasRole('Pembimbing Universitas')) {
+        if ($user->pembimbingUniversitas !== null) {
             $pembimbing = $user->pembimbingUniversitas;
             if ($pembimbing) {
                 $query->whereHas('mahasiswa', function ($q) use ($pembimbing) {
@@ -44,7 +44,7 @@ class LaporanKegiatanResource extends Resource
             }
         }
 
-        if ($user->hasRole('Mahasiswa')) {
+        if ($user->mahasiswa !== null) {
             $mahasiswa = $user->mahasiswa;
             if ($mahasiswa) {
                 $query->where('mahasiswa_id', $mahasiswa->id);
@@ -56,10 +56,7 @@ class LaporanKegiatanResource extends Resource
         return $query;
     }
 
-    public static function canAccess(): bool
-    {
-        return auth()->user()->can('access ' . class_basename(static::class));
-    }
+
 
     public static function form(Schema $schema): Schema
     {

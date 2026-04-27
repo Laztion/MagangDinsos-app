@@ -27,10 +27,7 @@ class PembimbingPerusahaanResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'nama';
 
-    public static function canAccess(): bool
-    {
-        return auth()->user()->can('access ' . class_basename(static::class));
-    }
+
 
     public static function form(Schema $schema): Schema
     {

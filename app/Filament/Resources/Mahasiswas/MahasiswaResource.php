@@ -29,7 +29,7 @@ class MahasiswaResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        if (auth()->check() && auth()->user()->hasRole('Pembimbing Universitas')) {
+        if (auth()->check() && auth()->user()->pembimbingUniversitas !== null) {
             $pembimbing = auth()->user()->pembimbingUniversitas;
             if ($pembimbing) {
                 $query->where('universitas_id', $pembimbing->universitas_id);
@@ -39,10 +39,7 @@ class MahasiswaResource extends Resource
         return $query;
     }
 
-    public static function canAccess(): bool
-    {
-        return auth()->user()->can('access ' . class_basename(static::class));
-    }
+
 
     public static function form(Schema $schema): Schema
     {

@@ -35,14 +35,14 @@ class AdminPanelProvider extends PanelProvider
             ->registration()
             ->emailverification()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Emerald,
                 'gray' => Color::Slate,
                 'info' => Color::Cyan,
-                'success' => Color::Emerald,
-                'warning' => Color::Orange,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
                 'danger' => Color::Rose,
             ])
-            ->font('Inter')
+            ->font('Outfit')
             ->brandName('SiMagang')
             ->sidebarCollapsibleOnDesktop()
             ->spa()
@@ -51,69 +51,100 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::BODY_START,
                 fn (): string => Blade::render('
                     <style>
+                        /* Design Tokens & Global Rounded */
+                        :root {
+                            --rounded-xl: 20px;
+                            --rounded-2xl: 28px;
+                        }
+
+                        .fi-main-ctn, .fi-sidebar, .fi-topbar, .fi-section, .fi-card, .fi-modal-window, .fi-dropdown-panel {
+                            border-radius: var(--rounded-xl) !important;
+                        }
+
+                        /* Animated Background */
                         .bg-admin-animated {
                             position: fixed;
                             inset: 0;
                             z-index: -10;
-                            background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 40%, #f1f5f9 100%);
+                            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 40%, #f9fafb 100%);
                             overflow: hidden;
                         }
                         .dark .bg-admin-animated {
-                            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #0f172a 100%);
+                            background: linear-gradient(135deg, #064e3b 0%, #022c22 40%, #064e3b 100%);
                         }
                         .admin-blob {
                             position: absolute;
                             border-radius: 50%;
-                            filter: blur(80px);
-                            opacity: 0.6;
-                            animation: floatAdmin 12s ease-in-out infinite alternate;
+                            filter: blur(90px);
+                            opacity: 0.5;
+                            animation: floatAdmin 15s ease-in-out infinite alternate;
                         }
                         .dark .admin-blob {
-                            opacity: 0.35;
+                            opacity: 0.25;
                         }
                         .admin-blob-1 {
-                            width: 600px; height: 600px;
-                            background: radial-gradient(circle, #93c5fd, #3b82f6);
-                            top: -200px; left: -150px;
+                            width: 700px; height: 700px;
+                            background: radial-gradient(circle, #34d399, #10b981);
+                            top: -250px; left: -200px;
                             animation-delay: 0s;
                         }
-                        .dark .admin-blob-1 {
-                            background: radial-gradient(circle, #3b82f6, #1d4ed8);
-                        }
                         .admin-blob-2 {
-                            width: 500px; height: 500px;
-                            background: radial-gradient(circle, #c4b5fd, #8b5cf6);
-                            bottom: -150px; right: -100px;
-                            animation-delay: 3s;
-                        }
-                        .dark .admin-blob-2 {
-                            background: radial-gradient(circle, #8b5cf6, #6d28d9);
+                            width: 600px; height: 600px;
+                            background: radial-gradient(circle, #a7f3d0, #34d399);
+                            bottom: -200px; right: -150px;
+                            animation-delay: 4s;
                         }
                         @keyframes floatAdmin {
                             0%   { transform: translate(0, 0) scale(1); }
-                            50%  { transform: translate(40px, -40px) scale(1.05); }
-                            100% { transform: translate(-20px, 30px) scale(0.97); }
+                            50%  { transform: translate(60px, -50px) scale(1.1); }
+                            100% { transform: translate(-30px, 40px) scale(0.9); }
                         }
-                        /* Make filament layout transparent to show the animated background */
+
+                        /* Transparency & Glassmorphism */
                         .fi-body, .fi-layout, .fi-main {
                             background-color: transparent !important;
                         }
-                        /* Optional: add slight transparency to the sidebar/topbar for glass effect */
+                        
                         .fi-sidebar {
-                            background-color: rgba(255, 255, 255, 0.8) !important;
-                            backdrop-filter: blur(16px);
+                            background-color: rgba(255, 255, 255, 0.75) !important;
+                            backdrop-filter: blur(20px);
+                            border-right: 1px solid rgba(0,0,0,0.05) !important;
+                            margin: 1rem;
+                            height: calc(100vh - 2rem) !important;
+                            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
                         }
                         .dark .fi-sidebar {
-                            background-color: rgba(15, 23, 42, 0.8) !important;
+                            background-color: rgba(6, 78, 59, 0.6) !important;
+                            border-right: 1px solid rgba(255,255,255,0.1) !important;
                         }
+
                         .fi-topbar {
-                            background-color: rgba(255, 255, 255, 0.7) !important;
-                            backdrop-filter: blur(16px);
+                            background-color: rgba(255, 255, 255, 0.6) !important;
+                            backdrop-filter: blur(20px);
+                            border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+                            margin-bottom: 1rem;
                         }
                         .dark .fi-topbar {
-                            background-color: rgba(15, 23, 42, 0.7) !important;
+                            background-color: rgba(2, 44, 34, 0.6) !important;
                         }
-                        
+
+                        /* Content Refinement */
+                        .fi-section, .fi-ta-ctn, .fi-stats-overview-stat {
+                            background-color: rgba(255, 255, 255, 0.8) !important;
+                            backdrop-filter: blur(10px);
+                            border: 1px solid rgba(0,0,0,0.03) !important;
+                            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05) !important;
+                            transition: transform 0.2s ease, box-shadow 0.2s ease;
+                        }
+                        .fi-section:hover, .fi-stats-overview-stat:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08) !important;
+                        }
+
+                        /* Niceer Inputs */
+                        input, select, textarea {
+                            border-radius: 12px !important;
+                        }
                     </style>
                     <div class="bg-admin-animated">
                         <div class="admin-blob admin-blob-1"></div>

@@ -19,8 +19,6 @@ class MahasiswaForm
     {
         return $schema
             ->components([
-                Grid::make(3)
-                    ->schema([
                         Grid::make(1)
                             ->schema([
                                 Section::make('Data Pribadi')
@@ -96,6 +94,9 @@ class MahasiswaForm
                                             ->image()
                                             ->avatar()
                                             ->imageEditor()
+                                            ->disk('public')
+                                            ->directory('mahasiswa')
+                                            ->visibility('public')
                                             ->extraAttributes(['class' => 'mx-auto']),
                                         
                                         Toggle::make('statusKeaktifan')
@@ -117,7 +118,6 @@ class MahasiswaForm
                                     ]),
                             ])
                             ->columnSpan(1),
-                    ]),
-            ]);
+                    ]);
     }
 }

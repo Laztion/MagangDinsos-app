@@ -19,6 +19,10 @@ class LaporanKegiatanPolicy
 
     public function view(AuthUser $authUser, LaporanKegiatan $laporanKegiatan): bool
     {
+        if ($authUser->mahasiswa) {
+            return $authUser->can('View:LaporanKegiatan') && $laporanKegiatan->mahasiswa_id === $authUser->mahasiswa->id;
+        }
+        
         return $authUser->can('View:LaporanKegiatan');
     }
 
@@ -29,11 +33,19 @@ class LaporanKegiatanPolicy
 
     public function update(AuthUser $authUser, LaporanKegiatan $laporanKegiatan): bool
     {
+        if ($authUser->mahasiswa) {
+            return $authUser->can('Update:LaporanKegiatan') && $laporanKegiatan->mahasiswa_id === $authUser->mahasiswa->id;
+        }
+
         return $authUser->can('Update:LaporanKegiatan');
     }
 
     public function delete(AuthUser $authUser, LaporanKegiatan $laporanKegiatan): bool
     {
+        if ($authUser->mahasiswa) {
+            return $authUser->can('Delete:LaporanKegiatan') && $laporanKegiatan->mahasiswa_id === $authUser->mahasiswa->id;
+        }
+
         return $authUser->can('Delete:LaporanKegiatan');
     }
 

@@ -6,6 +6,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
 
 class KegiatanMagangForm
@@ -14,11 +15,19 @@ class KegiatanMagangForm
     {
         return $schema
             ->components([
-                Select::make('mahasiswa_id')
-                    ->relationship('mahasiswa', 'nama')
+                \Filament\Forms\Components\Placeholder::make('mahasiswa_name')
+                    ->label('Mahasiswa')
+                    ->content(fn() => auth()->user()->mahasiswa?->nama)
+                    ->visible(fn() => auth()->user()->mahasiswa !== null),
+                \Filament\Forms\Components\Hidden::make('mahasiswa_id')
                     ->default(fn() => auth()->user()->mahasiswa?->id)
-                    ->hidden(fn() => auth()->user()->mahasiswa !== null)
-                    ->dehydrated() // Ensure it's sent to the server even if hidden
+                    ->visible(fn() => auth()->user()->mahasiswa !== null)
+                    ->dehydrated(true)
+                    ->required(),
+                Select::make('mahasiswa_id')
+                    ->label('Pilih Mahasiswa')
+                    ->relationship('mahasiswa', 'nama')
+                    ->visible(fn() => auth()->user()->mahasiswa === null)
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -37,6 +46,10 @@ class KegiatanMagangForm
                     ->searchable()
                     ->preload()
                     ->required(),
+                TextInput::make('judulKegiatan')
+                    ->label('Judul Kegiatan')
+                    ->required()
+                    ->maxLength(255),
                 DateTimePicker::make('tanggalMulai')
                     ->required(),
                 DateTimePicker::make('tanggalSelesai')
@@ -49,9 +62,19 @@ class KegiatanMagangForm
                 Textarea::make('deskripsiTugas')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('dokumentasi')
+                FileUpload::make('dokumentasi')
+                    ->disk('public')
+                    ->directory('kegiatan-dokumentasi')
+                    ->acceptedFileTypes(['image/*', 'video/*']) // Mendukung foto dan video
+                    ->downloadable()
+                    ->openable()
                     ->default(null),
-                TextInput::make('statusKegiatan')
+                Select::make('statusKegiatan')
+                    ->options([
+                        'aktif' => 'Aktif',
+                        'pending' => 'Pending',
+                        'selesai' => 'Selesai',
+                    ])
                     ->required()
                     ->default('aktif'),
             ]);

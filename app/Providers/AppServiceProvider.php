@@ -21,8 +21,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Super admin bypass — melewati semua policy & permission check
-        Gate::before(function ($user, $ability) {
+        \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
             return $user->hasRole('super_admin') ? true : null;
         });
+
+        // Register Observer
+        \App\Models\KegiatanMagang::observe(\App\Observers\KegiatanMagangObserver::class);
     }
 }

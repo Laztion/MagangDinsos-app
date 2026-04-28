@@ -27,7 +27,7 @@ return [
             'pages' => true,
             'widgets' => true,
             'resources' => true,
-            'custom_permissions' => false,
+            'custom_permissions' => true,
         ],
     ],
 
@@ -232,7 +232,14 @@ return [
     |
     */
 
-    'custom_permissions' => [],
+    'custom_permissions' => [
+        'view_logs',
+        'manage_settings',
+        'approve_kegiatan',
+        'reject_kegiatan',
+        'finalize_penilaian',
+        'export_reports',
+    ],
 
     /*
     |--------------------------------------------------------------------------

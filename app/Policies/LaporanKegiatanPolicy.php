@@ -19,22 +19,6 @@ class LaporanKegiatanPolicy
 
     public function view(AuthUser $authUser, LaporanKegiatan $laporanKegiatan): bool
     {
-        if ($authUser->hasRole(['super_admin', 'admin'])) {
-            return true;
-        }
-
-        if ($authUser->hasRole('pembimbing_universitas')) {
-            return $authUser->pembimbingUniversitas?->universitas_id === $laporanKegiatan->mahasiswa?->universitas_id;
-        }
-
-        if ($authUser->hasRole('pembimbing_perusahaan')) {
-            return $authUser->pembimbingPerusahaan?->perusahaan_id === $laporanKegiatan->kegiatanMagang?->perusahaan_id;
-        }
-
-        if ($authUser->hasRole('mahasiswa')) {
-            return $authUser->id === $laporanKegiatan->mahasiswa?->user_id;
-        }
-
         return $authUser->can('View:LaporanKegiatan');
     }
 

@@ -9,7 +9,7 @@
     </div>
 
     <!-- Main Container -->
-    <div class="auth-container" data-aos="fade-up">
+    <div class="auth-container anim-fade-up">
         
         <!-- Back Button -->
         <div style="margin-bottom: 1rem; padding-left: 0.5rem;">
@@ -29,14 +29,14 @@
                     <div class="auth-banner-circle-2"></div>
                 </div>
 
-                <div class="auth-banner-header" data-aos="fade-down">
+                <div class="auth-banner-header anim-fade-down">
                     <div class="auth-logo-box">
                         <svg class="auth-logo-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <span class="auth-brand-text">Si<span style="color: #6ee7b7;">Magang</span></span>
                 </div>
 
-                <div class="auth-banner-title" data-aos="fade-right" data-aos-delay="100">
+                <div class="auth-banner-title anim-fade-right delay-100">
                     <h1>
                         Portal Karir & <br/>
                         <span class="auth-brand-gradient">Magang Terpadu</span>
@@ -47,7 +47,7 @@
                 </div>
 
                 <!-- Floating Testimonial/Stats Card -->
-                <div class="auth-stats-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="auth-stats-card anim-fade-up delay-200">
                     <div class="auth-stats-flex">
                         <div class="auth-avatars">
                             <img src="https://ui-avatars.com/api/?name=User+1&background=10b981&color=fff" alt="User">
@@ -65,14 +65,14 @@
             <!-- Right Side - Form -->
             <div class="auth-form-side">
                 <!-- Mobile Logo -->
-                <div class="auth-mobile-logo" data-aos="fade-down">
+                <div class="auth-mobile-logo anim-fade-down">
                     <div class="auth-logo-box-mobile">
                         <svg class="auth-logo-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <span class="auth-brand-text-mobile">Si<span style="color: #059669;">Magang</span></span>
                 </div>
 
-                <div class="auth-form-inner" data-aos="fade-left" data-aos-delay="100">
+                <div class="auth-form-inner anim-fade-left delay-100">
                     <div class="auth-form-header">
                         <h2>Selamat Datang 👋</h2>
                         <p>
@@ -90,7 +90,7 @@
     </div>
 
     <!-- Styles for Layout and Aesthetics -->
-    <style>
+    <style wire:ignore>
         .auth-root { min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; background-color: #f9fafb; position: relative; overflow: hidden; font-family: 'Outfit', sans-serif; }
         .dark .auth-root { background-color: #030712; }
         .auth-bg-anim { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -167,6 +167,20 @@
             100% { transform: translate(0px, 0px) scale(1); }
         }
 
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeLeft { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+        .anim-fade-up { opacity: 0; animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .anim-fade-down { opacity: 0; animation: fadeDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .anim-fade-right { opacity: 0; animation: fadeRight 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .anim-fade-left { opacity: 0; animation: fadeLeft 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
         /* Filament Form Overrides for better aesthetics */
         .auth-form-wrapper .fi-btn { border-radius: 1rem !important; padding: 0.75rem 1.5rem !important; font-weight: 700 !important; transition: all 0.3s ease !important; }
         .auth-form-wrapper .fi-btn-color-primary { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; border: none !important; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3) !important; color: white !important; }
@@ -183,14 +197,4 @@
         .auth-back-btn svg { width: 1.25rem; height: 1.25rem; transition: transform 0.3s ease; }
         .auth-back-btn:hover svg { transform: translateX(-4px); }
     </style>
-
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof AOS !== 'undefined') {
-                AOS.init({ duration: 1000, once: true, easing: 'ease-out-cubic' });
-            }
-        });
-    </script>
 </div>

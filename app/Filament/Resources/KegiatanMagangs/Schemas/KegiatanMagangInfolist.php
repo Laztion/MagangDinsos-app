@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\KegiatanMagangs\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Schemas\Schema;
-use Illuminate\Http\UploadedFile;
 
 class KegiatanMagangInfolist
 {
@@ -30,7 +30,9 @@ class KegiatanMagangInfolist
                 TextEntry::make('divisiTempat'),
                 TextEntry::make('deskripsiTugas')
                     ->columnSpanFull(),
-                UploadedFile::make('dokumentasi')
+                ImageEntry::make('dokumentasi')
+                    ->disk('public')
+                    ->visibility('public')
                     ->placeholder('-'),
                 TextEntry::make('statusKegiatan'),
                 TextEntry::make('created_at')

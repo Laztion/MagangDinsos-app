@@ -15,8 +15,6 @@ class MahasiswaInfolist
     {
         return $schema
             ->components([
-                Grid::make(3)
-                    ->schema([
                         Grid::make(1)
                             ->schema([
                                 Section::make('Data Pribadi')
@@ -101,7 +99,6 @@ class MahasiswaInfolist
                                     ]),
                             ])
                             ->columnSpan(1),
-                    ]),
             ]);
     }
 }

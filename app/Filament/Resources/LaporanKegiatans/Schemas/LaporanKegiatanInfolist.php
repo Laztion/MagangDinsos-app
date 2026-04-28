@@ -17,7 +17,8 @@ class LaporanKegiatanInfolist
                     ->label('Mahasiswa'),
                 TextEntry::make('tanggalLaporan')
                     ->date(),
-                TextEntry::make('aktivitasKegiatan')
+                TextEntry::make('kegiatanMagang.deskripsiTugas')
+                    ->label('Detail Aktivitas')
                     ->columnSpanFull(),
                 TextEntry::make('hasilPekerjaan')
                     ->placeholder('-')

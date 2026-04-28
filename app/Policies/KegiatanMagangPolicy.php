@@ -19,6 +19,22 @@ class KegiatanMagangPolicy
 
     public function view(AuthUser $authUser, KegiatanMagang $kegiatanMagang): bool
     {
+        if ($authUser->hasRole(['super_admin', 'admin'])) {
+            return true;
+        }
+
+        if ($authUser->hasRole('pembimbing_universitas')) {
+            return $authUser->pembimbingUniversitas?->universitas_id === $kegiatanMagang->mahasiswa?->universitas_id;
+        }
+
+        if ($authUser->hasRole('pembimbing_perusahaan')) {
+            return $authUser->pembimbingPerusahaan?->perusahaan_id === $kegiatanMagang->perusahaan_id;
+        }
+
+        if ($authUser->hasRole('mahasiswa')) {
+            return $authUser->id === $kegiatanMagang->mahasiswa?->user_id;
+        }
+
         return $authUser->can('View:KegiatanMagang');
     }
 

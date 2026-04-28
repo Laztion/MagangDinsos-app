@@ -28,12 +28,34 @@ class MahasiswaResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
+        $user = auth()->user();
 
-        if (auth()->check() && auth()->user()->pembimbingUniversitas !== null) {
-            $pembimbing = auth()->user()->pembimbingUniversitas;
+        if (!$user) {
+            return $query;
+        }
+
+        if ($user->hasRole('super_admin') || $user->hasRole('admin')) {
+            return $query;
+        }
+
+        if ($user->hasRole('pembimbing_universitas')) {
+            $pembimbing = $user->pembimbingUniversitas;
             if ($pembimbing) {
                 $query->where('universitas_id', $pembimbing->universitas_id);
             }
+        }
+
+        if ($user->hasRole('pembimbing_perusahaan')) {
+            $pembimbing = $user->pembimbingPerusahaan;
+            if ($pembimbing) {
+                $query->whereHas('kegiatanMagang', function ($q) use ($pembimbing) {
+                    $q->where('perusahaan_id', $pembimbing->perusahaan_id);
+                });
+            }
+        }
+
+        if ($user->hasRole('mahasiswa')) {
+            $query->where('user_id', $user->id);
         }
 
         return $query;

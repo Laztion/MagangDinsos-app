@@ -30,8 +30,11 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        $adminUser->assignRole('super_admin');
+
         // 3. Run Indonesian Data Seeder
         $this->call([
+            ShieldSeeder::class,
             IndonesianSeeder::class,
         ]);
     }

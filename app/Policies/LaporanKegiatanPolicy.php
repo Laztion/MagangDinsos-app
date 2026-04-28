@@ -19,10 +19,22 @@ class LaporanKegiatanPolicy
 
     public function view(AuthUser $authUser, LaporanKegiatan $laporanKegiatan): bool
     {
-        if ($authUser->mahasiswa) {
-            return $authUser->can('View:LaporanKegiatan') && $laporanKegiatan->mahasiswa_id === $authUser->mahasiswa->id;
+        if ($authUser->hasRole(['super_admin', 'admin'])) {
+            return true;
         }
-        
+
+        if ($authUser->hasRole('pembimbing_universitas')) {
+            return $authUser->pembimbingUniversitas?->universitas_id === $laporanKegiatan->mahasiswa?->universitas_id;
+        }
+
+        if ($authUser->hasRole('pembimbing_perusahaan')) {
+            return $authUser->pembimbingPerusahaan?->perusahaan_id === $laporanKegiatan->kegiatanMagang?->perusahaan_id;
+        }
+
+        if ($authUser->hasRole('mahasiswa')) {
+            return $authUser->id === $laporanKegiatan->mahasiswa?->user_id;
+        }
+
         return $authUser->can('View:LaporanKegiatan');
     }
 
@@ -33,19 +45,11 @@ class LaporanKegiatanPolicy
 
     public function update(AuthUser $authUser, LaporanKegiatan $laporanKegiatan): bool
     {
-        if ($authUser->mahasiswa) {
-            return $authUser->can('Update:LaporanKegiatan') && $laporanKegiatan->mahasiswa_id === $authUser->mahasiswa->id;
-        }
-
         return $authUser->can('Update:LaporanKegiatan');
     }
 
     public function delete(AuthUser $authUser, LaporanKegiatan $laporanKegiatan): bool
     {
-        if ($authUser->mahasiswa) {
-            return $authUser->can('Delete:LaporanKegiatan') && $laporanKegiatan->mahasiswa_id === $authUser->mahasiswa->id;
-        }
-
         return $authUser->can('Delete:LaporanKegiatan');
     }
 

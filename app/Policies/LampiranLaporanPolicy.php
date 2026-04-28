@@ -19,6 +19,22 @@ class LampiranLaporanPolicy
 
     public function view(AuthUser $authUser, LampiranLaporan $lampiranLaporan): bool
     {
+        if ($authUser->hasRole(['super_admin', 'admin'])) {
+            return true;
+        }
+
+        if ($authUser->hasRole('pembimbing_universitas')) {
+            return $authUser->pembimbingUniversitas?->universitas_id === $lampiranLaporan->laporanKegiatan?->mahasiswa?->universitas_id;
+        }
+
+        if ($authUser->hasRole('pembimbing_perusahaan')) {
+            return $authUser->pembimbingPerusahaan?->perusahaan_id === $lampiranLaporan->laporanKegiatan?->kegiatanMagang?->perusahaan_id;
+        }
+
+        if ($authUser->hasRole('mahasiswa')) {
+            return $authUser->id === $lampiranLaporan->laporanKegiatan?->mahasiswa?->user_id;
+        }
+
         return $authUser->can('View:LampiranLaporan');
     }
 

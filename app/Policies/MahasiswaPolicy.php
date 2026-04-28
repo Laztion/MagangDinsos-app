@@ -19,6 +19,24 @@ class MahasiswaPolicy
 
     public function view(AuthUser $authUser, Mahasiswa $mahasiswa): bool
     {
+        if ($authUser->hasRole(['super_admin', 'admin'])) {
+            return true;
+        }
+
+        if ($authUser->hasRole('pembimbing_universitas')) {
+            return $authUser->pembimbingUniversitas?->universitas_id === $mahasiswa->universitas_id;
+        }
+
+        if ($authUser->hasRole('pembimbing_perusahaan')) {
+            return $mahasiswa->kegiatanMagang()
+                ->where('perusahaan_id', $authUser->pembimbingPerusahaan?->perusahaan_id)
+                ->exists();
+        }
+
+        if ($authUser->hasRole('mahasiswa')) {
+            return $authUser->id === $mahasiswa->user_id;
+        }
+
         return $authUser->can('View:Mahasiswa');
     }
 

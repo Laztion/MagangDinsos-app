@@ -35,7 +35,11 @@ class LaporanKegiatanResource extends Resource
 
         if (!$user) return $query;
 
-        if ($user->pembimbingUniversitas !== null) {
+        if ($user->hasRole('super_admin') || $user->hasRole('admin')) {
+            return $query;
+        }
+
+        if ($user->hasRole('pembimbing_universitas')) {
             $pembimbing = $user->pembimbingUniversitas;
             if ($pembimbing) {
                 $query->whereHas('mahasiswa', function ($q) use ($pembimbing) {
@@ -44,7 +48,16 @@ class LaporanKegiatanResource extends Resource
             }
         }
 
-        if ($user->mahasiswa !== null) {
+        if ($user->hasRole('pembimbing_perusahaan')) {
+            $pembimbing = $user->pembimbingPerusahaan;
+            if ($pembimbing) {
+                $query->whereHas('kegiatanMagang', function ($q) use ($pembimbing) {
+                    $q->where('perusahaan_id', $pembimbing->perusahaan_id);
+                });
+            }
+        }
+
+        if ($user->hasRole('mahasiswa')) {
             $mahasiswa = $user->mahasiswa;
             if ($mahasiswa) {
                 $query->where('mahasiswa_id', $mahasiswa->id);

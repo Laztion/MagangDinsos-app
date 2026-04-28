@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         // 3. Run Indonesian Data Seeder
         $this->call([
             ShieldSeeder::class,
-            IndonesianSeeder::class,
+            ProductionDataSeeder::class,
         ]);
     }
 }

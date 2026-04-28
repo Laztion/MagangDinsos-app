@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PembimbingPerusahaan extends Model
 {
     protected $fillable = [
+        'user_id',
         'perusahaan_id',
         'nama',
         'posisi',
@@ -15,6 +16,11 @@ class PembimbingPerusahaan extends Model
         'bidangKeahlian',
         'tanggalDaftarSebagaiPembimbing',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function perusahaan()
     {

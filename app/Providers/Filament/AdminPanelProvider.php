@@ -46,6 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Outfit')
             ->brandName('SiMagang')
+            ->homeUrl('/')
             ->sidebarCollapsibleOnDesktop()
             ->spa()
             ->profile()
@@ -60,6 +61,14 @@ class AdminPanelProvider extends PanelProvider
                     <div class="admin-grid-plus"></div>
                     <div class="admin-noise"></div>
                     <div class="admin-viewport-glow"></div>
+                    <script>
+                        document.addEventListener("click", function(e) {
+                            const link = e.target.closest("a");
+                            if (link && (link.getAttribute("href") === "/" || link.getAttribute("href") === "/#")) {
+                                window.location.href = "/";
+                            }
+                        });
+                    </script>
                 ')
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

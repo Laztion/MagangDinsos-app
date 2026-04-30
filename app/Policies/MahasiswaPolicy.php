@@ -29,11 +29,19 @@ class MahasiswaPolicy
 
     public function update(AuthUser $authUser, Mahasiswa $mahasiswa): bool
     {
+        if ($authUser->hasRole('mahasiswa')) {
+            return $authUser->id === $mahasiswa->user_id && $authUser->can('Update:Mahasiswa');
+        }
+
         return $authUser->can('Update:Mahasiswa');
     }
 
     public function delete(AuthUser $authUser, Mahasiswa $mahasiswa): bool
     {
+        if ($authUser->hasRole('mahasiswa')) {
+            return $authUser->id === $mahasiswa->user_id && $authUser->can('Delete:Mahasiswa');
+        }
+
         return $authUser->can('Delete:Mahasiswa');
     }
 

@@ -78,9 +78,9 @@ class ShieldSeeder extends Seeder
             $role->syncPermissions($allPermissions);
         });
 
-        // Mahasiswa: Can view/update their own (enforced by Policy)
+        // Mahasiswa: Can view all, but only update their own (enforced by Policy)
         $mahasiswaPermissions = [
-            'View:Mahasiswa', 'Update:Mahasiswa',
+            'ViewAny:Mahasiswa', 'View:Mahasiswa', 'Update:Mahasiswa',
             'ViewAny:KegiatanMagang', 'View:KegiatanMagang',
             'ViewAny:LaporanKegiatan', 'View:LaporanKegiatan', 'Create:LaporanKegiatan', 'Update:LaporanKegiatan',
             'ViewAny:LampiranLaporan', 'View:LampiranLaporan', 'Create:LampiranLaporan', 'Update:LampiranLaporan',

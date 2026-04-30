@@ -54,10 +54,6 @@ class MahasiswaResource extends Resource
             }
         }
 
-        if ($user->hasRole('mahasiswa')) {
-            $query->where('user_id', $user->id);
-        }
-
         return $query;
     }
 

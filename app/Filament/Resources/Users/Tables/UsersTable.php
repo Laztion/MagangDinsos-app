@@ -36,6 +36,16 @@ class UsersTable
                     ->badge()
                     ->separator(','),
 
+                TextColumn::make('mahasiswa.nim')
+                    ->label('NIM')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                
+                TextColumn::make('mahasiswa.universitas.namaUniversitas')
+                    ->label('Universitas')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

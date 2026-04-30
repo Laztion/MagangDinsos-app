@@ -4,22 +4,41 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Universitas;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class UniversitasPolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Universitas');
+        if ($authUser->can('ViewAny:Universitas')) {
+            return true;
+        }
+
+        /** @var User $authUser */
+        if ($authUser->hasRole('pembimbing_universitas') || $authUser->hasRole('pembimbing_perusahaan')) {
+            return true;
+        }
+
+        return false;
     }
 
     public function view(AuthUser $authUser, Universitas $universitas): bool
     {
-        return $authUser->can('View:Universitas');
+        if ($authUser->can('View:Universitas')) {
+            return true;
+        }
+
+        /** @var User $authUser */
+        if ($authUser->hasRole('pembimbing_universitas') || $authUser->hasRole('pembimbing_perusahaan')) {
+            return true;
+        }
+
+        return false;
     }
 
     public function create(AuthUser $authUser): bool
@@ -29,7 +48,19 @@ class UniversitasPolicy
 
     public function update(AuthUser $authUser, Universitas $universitas): bool
     {
-        return $authUser->can('Update:Universitas');
+        if ($authUser->can('Update:Universitas')) {
+            return true;
+        }
+
+        /** @var User $authUser */
+        if ($authUser->hasRole('pembimbing_universitas')) {
+            $pembimbing = $authUser->pembimbingUniversitas;
+            if ($pembimbing) {
+                return $universitas->id === $pembimbing->universitas_id;
+            }
+        }
+
+        return false;
     }
 
     public function delete(AuthUser $authUser, Universitas $universitas): bool
@@ -71,5 +102,4 @@ class UniversitasPolicy
     {
         return $authUser->can('Reorder:Universitas');
     }
-
 }

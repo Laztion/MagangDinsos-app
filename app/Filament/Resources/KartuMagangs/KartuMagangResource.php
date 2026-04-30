@@ -15,11 +15,13 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class KartuMagangResource extends Resource
 {
     protected static ?string $model = KartuMagang::class;
+
     protected static ?int $navigationSort = 5;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -28,14 +30,20 @@ class KartuMagangResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $user = auth()->user();
 
-        if (!$user) return $query;
+        if (! $user) {
+            return $query;
+        }
 
-        if ($user->pembimbingUniversitas !== null) {
+        if ($user->hasRole('super_admin') || $user->hasRole('admin')) {
+            return $query;
+        }
+
+        if ($user->hasRole('pembimbing_universitas')) {
             $pembimbing = $user->pembimbingUniversitas;
             if ($pembimbing) {
                 $query->whereHas('mahasiswa', function ($q) use ($pembimbing) {
@@ -44,7 +52,16 @@ class KartuMagangResource extends Resource
             }
         }
 
-        if ($user->mahasiswa !== null) {
+        if ($user->hasRole('pembimbing_perusahaan')) {
+            $pembimbing = $user->pembimbingPerusahaan;
+            if ($pembimbing) {
+                $query->whereHas('kegiatanMagang', function ($q) use ($pembimbing) {
+                    $q->where('perusahaan_id', $pembimbing->perusahaan_id);
+                });
+            }
+        }
+
+        if ($user->hasRole('mahasiswa')) {
             $mahasiswa = $user->mahasiswa;
             if ($mahasiswa) {
                 $query->where('mahasiswa_id', $mahasiswa->id);
@@ -55,8 +72,6 @@ class KartuMagangResource extends Resource
 
         return $query;
     }
-
-
 
     public static function form(Schema $schema): Schema
     {

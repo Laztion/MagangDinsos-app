@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class RiwayatMagangResource extends Resource
 {
@@ -24,12 +25,14 @@ class RiwayatMagangResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $user = auth()->user();
 
-        if (!$user) return $query;
+        if (! $user) {
+            return $query;
+        }
 
         if ($user->pembimbingUniversitas !== null) {
             $pembimbing = $user->pembimbingUniversitas;
@@ -51,8 +54,6 @@ class RiwayatMagangResource extends Resource
 
         return $query;
     }
-
-
 
     public static function form(Schema $schema): Schema
     {

@@ -28,7 +28,7 @@ class PembimbingUniversitasTable
                         ->alignCenter()
                         ->size(100)
                         ->defaultImageUrl(fn ($record) => "https://ui-avatars.com/api/?name=" . urlencode($record->nama) . "&color=FFFFFF&background=10b981")
-                        ->extraAttributes(['class' => 'mb-4 mx-auto shadow-md border-4 border-white dark:border-gray-800']),
+                        ->extraImgAttributes(['class' => 'mb-4 mx-auto shadow-md border-4 border-white dark:border-gray-800']),
                     
                     Stack::make([
                         TextColumn::make('nama')

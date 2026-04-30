@@ -4,22 +4,41 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Perusahaan;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class PerusahaanPolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('ViewAny:Perusahaan');
+        if ($authUser->can('ViewAny:Perusahaan')) {
+            return true;
+        }
+
+        /** @var User $authUser */
+        if ($authUser->hasRole('pembimbing_universitas') || $authUser->hasRole('pembimbing_perusahaan')) {
+            return true;
+        }
+
+        return false;
     }
 
     public function view(AuthUser $authUser, Perusahaan $perusahaan): bool
     {
-        return $authUser->can('View:Perusahaan');
+        if ($authUser->can('View:Perusahaan')) {
+            return true;
+        }
+
+        /** @var User $authUser */
+        if ($authUser->hasRole('pembimbing_universitas') || $authUser->hasRole('pembimbing_perusahaan')) {
+            return true;
+        }
+
+        return false;
     }
 
     public function create(AuthUser $authUser): bool
@@ -29,7 +48,19 @@ class PerusahaanPolicy
 
     public function update(AuthUser $authUser, Perusahaan $perusahaan): bool
     {
-        return $authUser->can('Update:Perusahaan');
+        if ($authUser->can('Update:Perusahaan')) {
+            return true;
+        }
+
+        /** @var User $authUser */
+        if ($authUser->hasRole('pembimbing_perusahaan')) {
+            $pembimbing = $authUser->pembimbingPerusahaan;
+            if ($pembimbing) {
+                return $perusahaan->id === $pembimbing->perusahaan_id;
+            }
+        }
+
+        return false;
     }
 
     public function delete(AuthUser $authUser, Perusahaan $perusahaan): bool
@@ -71,5 +102,4 @@ class PerusahaanPolicy
     {
         return $authUser->can('Reorder:Perusahaan');
     }
-
 }

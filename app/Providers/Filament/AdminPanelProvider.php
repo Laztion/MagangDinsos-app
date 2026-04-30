@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->login(\App\Filament\Pages\Auth\Login::class)
             ->registration(\App\Filament\Pages\Auth\Register::class)
             ->emailverification()
@@ -45,138 +46,29 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Outfit')
             ->brandName('SiMagang')
+            ->homeUrl('/')
             ->sidebarCollapsibleOnDesktop()
             ->spa()
             ->profile()
             ->renderHook(
                 PanelsRenderHook::BODY_START,
                 fn (): string => Blade::render('
-                    <style>
-                        /* Design Tokens & Global Rounded */
-                        :root {
-                            --rounded-xl: 20px;
-                            --rounded-2xl: 28px;
-                        }
-
-                        .fi-main-ctn, .fi-sidebar, .fi-topbar, .fi-section, .fi-card, .fi-modal-window, .fi-dropdown-panel {
-                            border-radius: var(--rounded-xl) !important;
-                        }
-
-                        /* Animated Background */
-                        .bg-admin-animated {
-                            position: fixed;
-                            inset: 0;
-                            z-index: -10;
-                            background: radial-gradient(circle at 50% 50%, #f0fdf4 0%, #f9fafb 100%);
-                            overflow: hidden;
-                        }
-                        .dark .bg-admin-animated {
-                            background: radial-gradient(circle at 50% 50%, #064e3b 0%, #022c22 100%);
-                        }
-                        
-                        .admin-blob {
-                            position: absolute;
-                            border-radius: 50%;
-                            filter: blur(100px);
-                            opacity: 0.4;
-                            animation: floatAdmin 20s ease-in-out infinite alternate;
-                            transition: transform 0.5s ease-out;
-                        }
-                        .dark .admin-blob {
-                            opacity: 0.2;
-                        }
-                        .admin-blob-1 {
-                            width: 800px; height: 800px;
-                            background: radial-gradient(circle, #34d399, #10b981);
-                            top: -300px; left: -200px;
-                        }
-                        .admin-blob-2 {
-                            width: 700px; height: 700px;
-                            background: radial-gradient(circle, #a7f3d0, #34d399);
-                            bottom: -200px; right: -150px;
-                            animation-delay: -5s;
-                        }
-                        @keyframes floatAdmin {
-                            0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
-                            33%  { transform: translate(100px, -50px) rotate(120deg) scale(1.1); }
-                            66%  { transform: translate(-50px, 100px) rotate(240deg) scale(0.9); }
-                            100% { transform: translate(0, 0) rotate(360deg) scale(1); }
-                        }
-
-                        /* Noise & Glow */
-                        .admin-noise {
-                            position: fixed;
-                            inset: 0;
-                            z-index: -5;
-                            pointer-events: none;
-                            opacity: 0.03;
-                            background-image: url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E");
-                        }
-                        .admin-viewport-glow {
-                            position: fixed;
-                            inset: 0;
-                            z-index: -4;
-                            pointer-events: none;
-                            box-shadow: inset 0 0 150px rgba(16, 185, 129, 0.05);
-                        }
-
-                        /* Transparency & Glassmorphism */
-                        .fi-body, .fi-layout, .fi-main {
-                            background-color: transparent !important;
-                        }
-                        
-                        .fi-sidebar {
-                            background-color: rgba(255, 255, 255, 0.7) !important;
-                            backdrop-filter: blur(20px);
-                            border-right: 1px solid rgba(0,0,0,0.05) !important;
-                            margin: 1rem;
-                            height: calc(100vh - 2rem) !important;
-                            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
-                        }
-                        .dark .fi-sidebar {
-                            background-color: rgba(6, 78, 59, 0.4) !important;
-                            border-right: 1px solid rgba(255,255,255,0.05) !important;
-                        }
-
-                        .fi-topbar {
-                            background-color: rgba(255, 255, 255, 0.5) !important;
-                            backdrop-filter: blur(20px);
-                            border-bottom: 1px solid rgba(0,0,0,0.05) !important;
-                            margin-bottom: 1rem;
-                        }
-                        .dark .fi-topbar {
-                            background-color: rgba(2, 44, 34, 0.4) !important;
-                        }
-
-                        /* Content Refinement */
-                        .fi-section, .fi-ta-ctn, .fi-stats-overview-stat, .fi-card {
-                            background-color: rgba(255, 255, 255, 0.7) !important;
-                            backdrop-filter: blur(10px);
-                            border: 1px solid rgba(255,255,255,0.5) !important;
-                            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05) !important;
-                            transition: all 0.3s ease;
-                        }
-                        .dark .fi-section, .dark .fi-ta-ctn, .dark .fi-stats-overview-stat, .dark .fi-card {
-                            background-color: rgba(6, 78, 59, 0.2) !important;
-                            border: 1px solid rgba(255,255,255,0.05) !important;
-                        }
-                        .fi-section:hover, .fi-stats-overview-stat:hover {
-                            transform: translateY(-2px);
-                            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.1) !important;
-                            border-color: rgba(16, 185, 129, 0.3) !important;
-                        }
-
-                        /* Niceer Inputs */
-                        input, select, textarea {
-                            border-radius: 12px !important;
-                        }
-                    </style>
                     <div class="bg-admin-animated">
                         <div class="admin-blob admin-blob-1"></div>
                         <div class="admin-blob admin-blob-2"></div>
+                        <div class="admin-blob admin-blob-3"></div>
                     </div>
+                    <div class="admin-grid-plus"></div>
                     <div class="admin-noise"></div>
                     <div class="admin-viewport-glow"></div>
+                    <script>
+                        document.addEventListener("click", function(e) {
+                            const link = e.target.closest("a");
+                            if (link && (link.getAttribute("href") === "/" || link.getAttribute("href") === "/#")) {
+                                window.location.href = "/";
+                            }
+                        });
+                    </script>
                 ')
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

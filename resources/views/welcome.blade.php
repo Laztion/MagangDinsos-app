@@ -103,9 +103,13 @@
             }
         }
 
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
         body {
             background-color: #f9fafb;
-            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
@@ -281,9 +285,9 @@
                     <span class="mr-2">🎉</span> Batch Pendaftaran 2026 Dibuka
                 </div>
                 
-                <h1 class="text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight">
+                <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight">
                     Mulai Magang <br/>
-                    <span class="text-gradient">Profesional</span> <br/>
+                    <span class="text-gradient break-words">Profesional</span> <br/>
                     dengan SiMagang
                 </h1>
                 
@@ -357,7 +361,7 @@
                         <span class="w-12 h-[2px] bg-emerald-600"></span>
                         Fitur Utama
                     </h2>
-                    <h3 class="text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1]" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] break-words" data-aos="fade-up" data-aos-delay="100">
                         Digitalisasi <br/> Pengalaman Magang.
                     </h3>
                 </div>
@@ -384,7 +388,7 @@
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
                         </div>
                         <div>
-                            <h4 class="text-4xl lg:text-5xl font-black mb-6">E-ID Card & <br/> Integrasi QR Code.</h4>
+                            <h4 class="text-3xl md:text-4xl lg:text-5xl font-black mb-6">E-ID Card & <br/> Integrasi QR Code.</h4>
                             <p class="text-white/80 text-xl leading-relaxed max-w-xl">Identitas digital otomatis untuk akses absensi dan validasi kehadiran secara real-time di seluruh unit kerja.</p>
                         </div>
                     </div>
@@ -396,7 +400,7 @@
                         <div class="w-20 h-20 bg-emerald-600 rounded-3xl flex items-center justify-center text-white mb-12 shadow-lg shadow-emerald-900/50">
                             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                         </div>
-                        <h4 class="text-4xl lg:text-5xl font-black mb-6 text-gradient">Laporan & Penilaian <br/> Real-time Terpusat.</h4>
+                        <h4 class="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gradient">Laporan & Penilaian <br/> Real-time Terpusat.</h4>
                         <p class="text-gray-400 text-xl leading-relaxed">Dashboard transparan untuk memantau progres, nilai, dan umpan balik pembimbing secara langsung.</p>
                     </div>
                     <div class="lg:w-1/2 grid grid-cols-2 gap-4">
@@ -429,7 +433,7 @@
                     <span class="w-16 h-[2px] bg-emerald-600"></span>
                     Alumni Story
                 </h2>
-                <h3 class="text-6xl lg:text-9xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase">
+                <h3 class="text-5xl md:text-6xl lg:text-9xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase break-words">
                     Our <br/> Graduates.
                 </h3>
             </div>
@@ -458,7 +462,7 @@
                                 <span>{{ \Carbon\Carbon::parse($riwayat->tanggalMulai)->format('Y') }}</span>
                             </div>
                             
-                            <h4 class="text-4xl lg:text-6xl font-black text-gray-900 uppercase leading-none mb-8 tracking-tighter group-hover:text-emerald-600 transition-colors">
+                            <h4 class="text-3xl md:text-4xl lg:text-6xl font-black text-gray-900 uppercase leading-none mb-8 tracking-tighter group-hover:text-emerald-600 transition-colors break-words">
                                 {{ $riwayat->mahasiswa?->nama ?? 'ALUMNI' }}
                             </h4>
 
@@ -486,10 +490,10 @@
             </div>
 
             <div class="mt-40 text-center" data-aos="zoom-in">
-                <a href="{{ route('filament.admin.auth.register') }}" class="group relative inline-flex items-center gap-8 text-2xl lg:text-4xl font-black uppercase tracking-tighter hover:text-emerald-600 transition-all">
+                <a href="{{ route('filament.admin.auth.register') }}" class="group relative inline-flex items-center gap-4 lg:gap-8 text-xl md:text-2xl lg:text-4xl font-black uppercase tracking-tighter hover:text-emerald-600 transition-all">
                     Start Your Story
-                    <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform flex-shrink-0">
+                        <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </div>
                 </a>
             </div>

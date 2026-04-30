@@ -20,6 +20,7 @@ use UnitEnum;
 class PenilaianResource extends Resource
 {
     protected static ?string $model = Penilaian::class;
+
     protected static ?int $navigationSort = 4;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -27,8 +28,6 @@ class PenilaianResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Magang Management';
 
     protected static ?string $recordTitleAttribute = 'id';
-
-
 
     public static function form(Schema $schema): Schema
     {

@@ -49,17 +49,48 @@ class ProductionDataSeeder extends Seeder
 
         // 4. Mahasiswa
         foreach ($data['mahasiswa'] as $item) {
-            Mahasiswa::updateOrCreate(['id' => $item['id']], $this->except($item, ['id', 'created_at', 'updated_at']));
+            $mahasiswa = Mahasiswa::updateOrCreate(['id' => $item['id']], $this->except($item, ['id', 'created_at', 'updated_at']));
+            $userId = $item['user_id'] ?? null;
+            if ($userId) {
+                $user = User::find($userId);
+                if ($user) $user->assignRole('mahasiswa');
+            }
         }
 
         // 5. Pembimbing Universitas
         foreach ($data['pembimbing_universitas'] as $item) {
-            PembimbingUniversitas::updateOrCreate(['id' => $item['id']], $this->except($item, ['id', 'created_at', 'updated_at']));
+            $pembimbingUni = PembimbingUniversitas::updateOrCreate(['id' => $item['id']], $this->except($item, ['id', 'created_at', 'updated_at']));
+            $userId = $item['user_id'] ?? null;
+            if ($userId) {
+                $user = User::find($userId);
+                if ($user) $user->assignRole('pembimbing_universitas');
+            }
         }
 
         // 6. Pembimbing Perusahaan
         foreach ($data['pembimbing_perusahaan'] as $item) {
-            PembimbingPerusahaan::updateOrCreate(['id' => $item['id']], $this->except($item, ['id', 'created_at', 'updated_at']));
+            $pembimbingPer = PembimbingPerusahaan::updateOrCreate(['id' => $item['id']], $this->except($item, ['id', 'created_at', 'updated_at']));
+            $userId = $item['user_id'] ?? null;
+            
+            // If user_id is missing (like in old JSON data), try to find/create user by email
+            if (!$userId && isset($item['email'])) {
+                $user = User::firstOrCreate(
+                    ['email' => $item['email']],
+                    [
+                        'name' => $item['nama'],
+                        'password' => Hash::make('password'),
+                        'email_verified_at' => now(),
+                        'is_active' => true,
+                    ]
+                );
+                $userId = $user->id;
+                $pembimbingPer->update(['user_id' => $userId]);
+            }
+
+            if ($userId) {
+                $user = User::find($userId);
+                if ($user) $user->assignRole('pembimbing_perusahaan');
+            }
         }
 
         // 7. Kegiatan Magang

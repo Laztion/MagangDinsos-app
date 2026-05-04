@@ -16,6 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // 1. Run Shield Seeder to prepare roles and permissions
+        $this->call([
+            ShieldSeeder::class,
+        ]);
+
         // 2. Create Super Admin User if it doesn't exist
         $adminEmail = 'admin@admin.com';
         $adminUser = User::where('email', $adminEmail)->first();
@@ -32,9 +37,8 @@ class DatabaseSeeder extends Seeder
 
         $adminUser->assignRole('super_admin');
 
-        // 3. Run Indonesian Data Seeder
+        // 3. Run Production Data Seeder
         $this->call([
-            ShieldSeeder::class,
             ProductionDataSeeder::class,
         ]);
     }

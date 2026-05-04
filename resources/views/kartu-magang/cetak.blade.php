@@ -247,7 +247,7 @@
                                     </div>
 
                                     {{-- Name Area --}}
-                                    <div class="flex-1 flex flex-col justify-end px-6 pb-6">
+                                    <div class="flex-1 flex flex-col justify-end px-6 pb-6 ">
                                         <div class="nama-mahasiswa text-slate-900 tracking-tighter uppercase mb-1">
                                             {{ strtoupper($kartu->mahasiswa->nama ?? 'Nama Mahasiswa') }}
                                         </div>
@@ -291,21 +291,21 @@
 
                                     {{-- Data Area --}}
                                     <div class="glass-panel border-t border-white/60 p-7 space-y-3">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase">Full Name</span>
-                                            <span class="text-[0.75rem] font-extrabold text-slate-900 text-right truncate max-w-[150px] uppercase">{{ $kartu->mahasiswa->nama ?? '-' }}</span>
+                                        <div class="flex justify-between items-start gap-4">
+                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase mt-0.5 shrink-0">Full Name</span>
+                                            <span class="text-[0.65rem] font-extrabold text-slate-900 text-right uppercase leading-tight">{{ $kartu->mahasiswa->nama ?? '-' }}</span>
                                         </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase">ID Number</span>
-                                            <span class="text-[0.75rem] font-extrabold text-slate-900 text-right uppercase">{{ $kartu->mahasiswa->nim ?? '-' }}</span>
+                                        <div class="flex justify-between items-start gap-4">
+                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase mt-0.5 shrink-0">ID Number</span>
+                                            <span class="text-[0.65rem] font-extrabold text-slate-900 text-right uppercase leading-tight">{{ $kartu->mahasiswa->nim ?? '-' }}</span>
                                         </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase">Division</span>
-                                            <span class="text-[0.75rem] font-extrabold text-slate-900 text-right uppercase">{{ $kartu->mahasiswa->programStudi ?? '-' }}</span>
+                                        <div class="flex justify-between items-start gap-4">
+                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase mt-0.5 shrink-0">Division</span>
+                                            <span class="text-[0.65rem] font-extrabold text-slate-900 text-right uppercase leading-tight">{{ $kartu->mahasiswa->programStudi ?? '-' }}</span>
                                         </div>
-                                        <div class="pt-1 flex justify-between items-center border-t border-emerald-900/5">
-                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase">Validity</span>
-                                            <span class="text-[0.7rem] font-black text-emerald-700 text-right uppercase">
+                                        <div class="pt-1 flex justify-between items-start gap-4 border-t border-emerald-900/5">
+                                            <span class="text-[0.6rem] font-black text-emerald-800/50 tracking-widest uppercase mt-0.5 shrink-0">Validity</span>
+                                            <span class="text-[0.7rem] font-black text-emerald-700 text-right uppercase leading-tight">
                                                 {{ \Carbon\Carbon::parse($kartu->tanggalMulai)->format('d/m/y') }} — {{ \Carbon\Carbon::parse($kartu->tanggalSelesai)->format('d/m/y') }}
                                             </span>
                                         </div>
